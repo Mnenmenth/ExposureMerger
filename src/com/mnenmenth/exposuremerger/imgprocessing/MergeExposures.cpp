@@ -16,25 +16,25 @@ void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<floa
 
     std::cout << "ok" << std::endl;
     Mat calibrated;
-    CalibrateDebevec* calibrate = createCalibrateDebevec();
+    Ptr<CalibrateDebevec> calibrate = createCalibrateDebevec();
     calibrate->process(imgs, calibrated, times);
 
     std::cout << "ok?" << std::endl;
 
     Mat hdr;
-    MergeDebevec* debevec = createMergeDebevec();
+    Ptr<MergeDebevec> debevec = createMergeDebevec();
     debevec->process(imgs, hdr, times);
 
     Mat ldr;
-    TonemapDurand* tonemap = createTonemapDurand();
+    Ptr<TonemapDurand> tonemap = createTonemapDurand(1.3);
     tonemap->process(hdr, ldr);
 
     Mat fusion;
-    MergeMertens* mertens = createMergeMertens();
+    Ptr<MergeMertens> mertens = createMergeMertens();
     mertens->process(imgs, fusion);
 
     imwrite("fusion.png", fusion * 255);
     imwrite("ldr.png", ldr * 255);
-    imwrite("hdr.hdr", hdr);
+    imwrite("hdr.png", hdr);
 
 }
