@@ -15,6 +15,7 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QVBoxLayout>
+#include <QtCore/QSignalMapper>
 #include "../imgprocessing/MergeExposures.h"
 
 class ImgDisp : public QGroupBox {
@@ -58,7 +59,17 @@ private:
     QGroupBox* mertensGroup;
     QVBoxLayout* mertensLayout;
 
-    void Mat2QLabel(cv::Mat*, QLabel*);
+    void Mat2QLabel(cv::Mat*, QLabel*, int);
+
+    QSignalMapper* signalMapper;
+
+    struct RowData {
+        int rowNum;
+        QTableWidgetItem* img;
+        QTableWidgetItem* time;
+        QPushButton* remove;
+    };
+
 private slots:
     void addImgs();
     void mergeImgs();

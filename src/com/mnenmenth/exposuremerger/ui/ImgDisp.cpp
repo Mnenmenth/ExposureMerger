@@ -77,11 +77,13 @@ ImgDisp::ImgDisp() {
     mertensLayout->addWidget(mertensSaveButton);
     mertensLayout->addWidget(mertensImg);
 
-    connect(addImgsButton, SIGNAL(released()), this, SLOT(addImgs()));
-    connect(mergeButton, SIGNAL(released()), this, SLOT(mergeImgs()));
-    connect(debevecSaveButton, SIGNAL(released()), this, SLOT(debevecSave()));
-    connect(tonemapSaveButton, SIGNAL(released()), this, SLOT(tonemapSave()));
-    connect(mertensSaveButton, SIGNAL(released()), this, SLOT(mertensSave()));
+    signalMapper = new QSignalMapper(this);
+
+    connect(addImgsButton, SIGNAL(clicked()), this, SLOT(addImgs()));
+    connect(mergeButton, SIGNAL(clicked()), this, SLOT(mergeImgs()));
+    connect(debevecSaveButton, SIGNAL(clicked()), this, SLOT(debevecSave()));
+    connect(tonemapSaveButton, SIGNAL(clicked()), this, SLOT(tonemapSave()));
+    connect(mertensSaveButton, SIGNAL(clicked()), this, SLOT(mertensSave()));
 
     imgList->setRowCount(0);
     imgList->setColumnCount(3);
@@ -113,7 +115,8 @@ void ImgDisp::addImgs() {
             QTableWidgetItem* img = new QTableWidgetItem(file);
             QTableWidgetItem* time = new QTableWidgetItem(tr("0"));
             QPushButton* remove = new QPushButton("Remove Img");
-            connect(remove, SIGNAL(released()), this, SLOT(removeRow(rowNum, img, time, remove)));
+            connect(remove, &QPushButton::clicked, removeRow(rowNum, img, time, remove));
+//            removeRow(rowNum, img, time, remove);
             imgList->setItem(rowNum, 0, img);
             imgList->setItem(rowNum, 1, time);
             imgList->setCellWidget(rowNum, 2, remove);
@@ -134,9 +137,9 @@ void ImgDisp::mergeImgs() {
     std::vector<std::string> files;
     std::vector<float> times;
     for(int i = 0; i <= imgList->rowCount()-1; i++) {
-        std::string img = imgList->itemAt(i, 0)->text().toStdString();
+        std::string img = imgList->item(i, 0)->text().toStdString();
         bool* ok = new bool(true);
-        float time  = imgList->itemAt(i, 1)->text().toFloat();
+        float time  = imgList->item(i, 1)->text().toFloat();
         if(*ok) {
             files.push_back(img);
             times.push_back(time);
@@ -145,15 +148,17 @@ void ImgDisp::mergeImgs() {
         }
     }
     MergeExposures::merge(files, times, debevecMat, tonemapMat, mertensMat);
-    Mat2QLabel(debevecMat, debevecImg);
-    Mat2QLabel(tonemapMat, tonemapImg);
-    Mat2QLabel(mertensMat, mertensImg);
+    Mat2QLabel(debevecMat, debevecImg, 1);
+    Mat2QLabel(tonemapMat, tonemapImg, 255);
+    Mat2QLabel(mertensMat, mertensImg, 255);
 }
 
-void ImgDisp::Mat2QLabel(cv::Mat *src, QLabel* dest) {
-    cv::Mat temp = src->clone();
-    cv::cvtColor(*src, temp, cv::COLOR_BGR2RGB);
-    dest->setPixmap(QPixmap::fromImage(QImage(temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB32)));
+void ImgDisp::Mat2QLabel(cv::Mat *src, QLabel* dest, int mult) {
+    cv::Mat temp;
+    cv::cvtColor(*src*mult, temp, cv::COLOR_BGR2RGB);
+    temp.convertTo(temp, CV_8UC3);
+    std::cout << temp.type() << std::endl;
+    dest->setPixmap(QPixmap::fromImage(QImage(temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888)));
     dest->adjustSize();
 }
 
