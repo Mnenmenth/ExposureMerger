@@ -9,13 +9,13 @@
 #define EXPOSUREMERGER_MERGEEXPOSURES_H
 
 
-#include <opencv2/core/mat.hpp>
+#include <opencv2/opencv.hpp>
 #include <string>
 #include <vector>
 
 class MergeExposures {
 public:
-    static void merge(std::vector<std::string>&, std::vector<float>&);
+    static void merge(std::vector<std::string>&, std::vector<float>&, cv::Mat*, cv::Mat*, cv::Mat*);
 };
 
 

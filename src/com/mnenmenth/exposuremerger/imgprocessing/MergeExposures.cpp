@@ -5,21 +5,17 @@
   * https://github.com/Mnenmenth
   */
 
-#include <opencv2/opencv.hpp>
 #include "MergeExposures.h"
 
-void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<float>& times) {
+void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<float>& times, cv::Mat* debevecOut, cv::Mat* tonemapOut, cv::Mat* mertensOut) {
     using namespace cv;
     std::vector<Mat> imgs;
     for(std::string& img_path : img_paths)
         imgs.push_back(imread(img_path));
 
-    std::cout << "ok" << std::endl;
     Mat calibrated;
     Ptr<CalibrateDebevec> calibrate = createCalibrateDebevec();
     calibrate->process(imgs, calibrated, times);
-
-    std::cout << "ok?" << std::endl;
 
     Mat hdr;
     Ptr<MergeDebevec> debevec = createMergeDebevec();
@@ -33,8 +29,13 @@ void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<floa
     Ptr<MergeMertens> mertens = createMergeMertens();
     mertens->process(imgs, fusion);
 
-    imwrite("fusion.png", fusion * 255);
+
+    *debevecOut = hdr;
+    *tonemapOut = ldr;
+    *mertensOut = fusion;
+
+    /*imwrite("fusion.png", fusion * 255);
     imwrite("ldr.png", ldr * 255);
-    imwrite("hdr.png", hdr);
+    imwrite("hdr.png", hdr);*/
 
 }
