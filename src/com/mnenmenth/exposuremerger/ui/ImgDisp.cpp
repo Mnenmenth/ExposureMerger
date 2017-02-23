@@ -12,18 +12,21 @@ ImgDisp::ImgDisp() {
 
     debevecImg = new QLabel();
     debevecSaveButton = new QPushButton("Save Debevec Merge");
+    debevecMat = new cv::Mat();
 
     tonemapImg = new QLabel();
     tonemapSaveButton = new QPushButton("Save Tonemap Merge");
+    tonemapMat = new cv::Mat();
 
     mertensImg = new QLabel();
     mertensSaveButton = new QPushButton("Save Mertens Merge");
+    mertensMat = new cv::Mat();
 
     imgList = new QTableWidget();
 
     addImgsButton = new QPushButton("Add Images");
 
-    mergeButton = new QPushButton("Merge Merged Images");
+    mergeButton = new QPushButton("Merge Images");
 
     mainLayout = new QVBoxLayout();
     mainLayout->setAlignment(Qt::AlignCenter);
@@ -148,8 +151,8 @@ void ImgDisp::mergeImgs() {
 }
 
 void ImgDisp::Mat2QLabel(cv::Mat *src, QLabel* dest) {
-    cv::Mat temp;
-    src->copyTo(temp);
+    cv::Mat temp = src->clone();
+    cv::cvtColor(*src, temp, cv::COLOR_BGR2RGB);
     dest->setPixmap(QPixmap::fromImage(QImage(temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB32)));
     dest->adjustSize();
 }
@@ -157,7 +160,7 @@ void ImgDisp::Mat2QLabel(cv::Mat *src, QLabel* dest) {
 void ImgDisp::debevecSave() {
     QString filter = tr("Image (*.jpg *.jpeg *.png *.tif *.bmp)");
     std::string path = QFileDialog::getSaveFileName(this, tr("Save File As"), QDir::homePath(), tr("Image (*.jpg *.jpeg *.png *.tif *.bmp);;All files(*.*)"), &filter).toStdString();
-    cv::imwrite(path, *debevecMat * 255);
+    cv::imwrite(path, *debevecMat);
 }
 
 void ImgDisp::tonemapSave() {
@@ -169,5 +172,5 @@ void ImgDisp::tonemapSave() {
 void ImgDisp::mertensSave() {
     QString filter = tr("Image (*.jpg *.jpeg *.png *.tif *.bmp)");
     std::string path = QFileDialog::getSaveFileName(this, tr("Save File As"), QDir::homePath(), tr("Image (*.jpg *.jpeg *.png *.tif *.bmp);;All files(*.*)"), &filter).toStdString();
-    cv::imwrite(path, *mertensMat);
+    cv::imwrite(path, *mertensMat * 255);
 }

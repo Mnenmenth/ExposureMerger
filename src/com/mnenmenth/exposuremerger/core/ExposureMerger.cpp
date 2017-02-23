@@ -8,6 +8,7 @@
 #include <QtWidgets/QApplication>
 #include <iostream>
 #include "../ui/ImgDisp.h"
+#include "../imgprocessing/MergeExposures.h"
 
 int main(int argc, char** argv) {
 
@@ -16,10 +17,10 @@ int main(int argc, char** argv) {
     QCoreApplication::setOrganizationDomain("https://mnenmenth.com");
     QCoreApplication::setApplicationVersion("0.1");
 
-    ImgDisp imgDisp;
+    ImgDisp* imgDisp = new ImgDisp;
 
-    app.setActiveWindow(&imgDisp);
-    imgDisp.show();
+    app.setActiveWindow(imgDisp);
+    imgDisp->show();
 
     return app.exec();
 }

@@ -30,9 +30,9 @@ void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<floa
     mertens->process(imgs, fusion);
 
 
-    *debevecOut = hdr;
-    *tonemapOut = ldr;
-    *mertensOut = fusion;
+    *debevecOut = hdr.clone();
+    *tonemapOut = ldr.clone();
+    *mertensOut = fusion.clone();
 
     /*imwrite("fusion.png", fusion * 255);
     imwrite("ldr.png", ldr * 255);
