@@ -219,7 +219,7 @@ void ImgDisp::mergeImgs() {
         message.adjustSize();
         message.exec();
     }
-    if (*time_ok and *gamma_ok) {
+    if (*time_ok && *gamma_ok) {
         MergeExposures::merge(files, times, gamma, debevecMat, tonemapMat, mertensMat);
         Mat2QLabel(debevecMat, debevecImg, 1);
         Mat2QLabel(tonemapMat, tonemapImg, 255);
