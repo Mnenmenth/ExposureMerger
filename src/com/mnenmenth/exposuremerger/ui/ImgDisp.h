@@ -8,6 +8,7 @@
 #ifndef EXPOSUREMERGER_IMGDISP_H
 #define EXPOSUREMERGER_IMGDISP_H
 
+#include <memory>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QTableWidget>
@@ -16,67 +17,70 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QVBoxLayout>
 #include <QtCore/QSignalMapper>
+#include <QtWidgets/QLineEdit>
 #include "../imgprocessing/MergeExposures.h"
 
 class ImgDisp : public QGroupBox {
 Q_OBJECT
 public:
     ImgDisp();
+
     ~ImgDisp();
+
 private:
-    QLabel* debevecImg;
-    QPushButton* debevecSaveButton;
-    cv::Mat* debevecMat;
+    QLabel *debevecImg;
+    QPushButton *debevecSaveButton;
+    cv::Mat *debevecMat;
 
-    QLabel* tonemapImg;
-    QPushButton* tonemapSaveButton;
-    cv::Mat* tonemapMat;
+    QLabel *tonemapImg;
+    QPushButton *tonemapSaveButton;
+    cv::Mat *tonemapMat;
 
-    QLabel* mertensImg;
-    QPushButton* mertensSaveButton;
-    cv::Mat* mertensMat;
+    QLabel *mertensImg;
+    QPushButton *mertensSaveButton;
+    cv::Mat *mertensMat;
 
-    QTableWidget* imgList; //List of paths for now, in future
+    QTableWidget *imgList;
 
-    QPushButton* addImgsButton;
+    QPushButton *addImgsButton;
+    QPushButton *removeRowsButton;
+    QLabel *gammaLabel;
+    QLineEdit *gammaInput;
 
-    QPushButton* mergeButton;
+    QPushButton *mergeButton;
 
-    QVBoxLayout* mainLayout;
+    QVBoxLayout *mainLayout;
 
-    QGroupBox* topGroup;
-    QHBoxLayout* topLayout;
+    QGroupBox *topGroup;
+    QHBoxLayout *topLayout;
 
-    QGroupBox* bottomGroup;
-    QHBoxLayout* bottomLayout;
+    QGroupBox *bottomGroup;
+    QHBoxLayout *bottomLayout;
 
-    QGroupBox* debevecGroup;
-    QVBoxLayout* debevecLayout;
+    QGroupBox *debevecGroup;
+    QVBoxLayout *debevecLayout;
 
-    QGroupBox* tonemapGroup;
-    QVBoxLayout* tonemapLayout;
+    QGroupBox *tonemapGroup;
+    QVBoxLayout *tonemapLayout;
 
-    QGroupBox* mertensGroup;
-    QVBoxLayout* mertensLayout;
+    QGroupBox *mertensGroup;
+    QVBoxLayout *mertensLayout;
 
-    void Mat2QLabel(cv::Mat*, QLabel*, int);
-
-    QSignalMapper* signalMapper;
-
-    struct RowData {
-        int rowNum;
-        QTableWidgetItem* img;
-        QTableWidgetItem* time;
-        QPushButton* remove;
-    };
+    void Mat2QLabel(cv::Mat *, QLabel *, int);
 
 private slots:
+
     void addImgs();
+
+    void removeRows();
+
     void mergeImgs();
+
     void debevecSave();
+
     void tonemapSave();
+
     void mertensSave();
-    void removeRow(int, QTableWidgetItem*, QTableWidgetItem*, QPushButton*);
 };
 
 

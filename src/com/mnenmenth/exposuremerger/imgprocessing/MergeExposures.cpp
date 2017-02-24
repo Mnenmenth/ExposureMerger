@@ -7,10 +7,12 @@
 
 #include "MergeExposures.h"
 
-void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<float>& times, cv::Mat* debevecOut, cv::Mat* tonemapOut, cv::Mat* mertensOut) {
+void
+MergeExposures::merge(std::vector<std::string> &img_paths, std::vector<float> &times, float gamma, cv::Mat *debevecOut,
+                      cv::Mat *tonemapOut, cv::Mat *mertensOut) {
     using namespace cv;
     std::vector<Mat> imgs;
-    for(std::string& img_path : img_paths)
+    for (std::string &img_path : img_paths)
         imgs.push_back(imread(img_path));
 
     Mat calibrated;
@@ -22,7 +24,7 @@ void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<floa
     debevec->process(imgs, hdr, times);
 
     Mat ldr;
-    Ptr<TonemapDurand> tonemap = createTonemapDurand(1.3);
+    Ptr<TonemapDurand> tonemap = createTonemapDurand(gamma);
     tonemap->process(hdr, ldr);
 
     Mat fusion;
@@ -33,9 +35,4 @@ void MergeExposures::merge(std::vector<std::string>& img_paths, std::vector<floa
     *debevecOut = hdr.clone();
     *tonemapOut = ldr.clone();
     *mertensOut = fusion.clone();
-
-    /*imwrite("fusion.png", fusion * 255);
-    imwrite("ldr.png", ldr * 255);
-    imwrite("hdr.png", hdr);*/
-
 }

@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.6)
 project(ExposureMerger)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+
+#Required DLLs
+#libgcc_s_seh-1, libopencv_core310, libopencv_imgcodecs310, libopencv_imgproc310, libopencv_photo310, libstdc++-6, libwinpthread-1, Qt5Core, Qt5Gui, Qt5Widgets, tbb, zlib1
 
 set(SRC_DIR src/com/mnenmenth/exposuremerger)
 set(CORE_DIR ${SRC_DIR}/core)

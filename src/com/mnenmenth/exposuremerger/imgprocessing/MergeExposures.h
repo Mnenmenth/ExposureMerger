@@ -15,7 +15,7 @@
 
 class MergeExposures {
 public:
-    static void merge(std::vector<std::string>&, std::vector<float>&, cv::Mat*, cv::Mat*, cv::Mat*);
+    static void merge(std::vector<std::string> &, std::vector<float> &, float, cv::Mat *, cv::Mat *, cv::Mat *);
 };
 
 

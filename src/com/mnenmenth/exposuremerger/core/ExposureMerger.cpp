@@ -6,18 +6,16 @@
   */
 
 #include <QtWidgets/QApplication>
-#include <iostream>
 #include "../ui/ImgDisp.h"
-#include "../imgprocessing/MergeExposures.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
 
     QApplication app(argc, argv);
     QCoreApplication::setOrganizationName("Mnenmenth Software");
     QCoreApplication::setOrganizationDomain("https://mnenmenth.com");
     QCoreApplication::setApplicationVersion("0.1");
 
-    ImgDisp* imgDisp = new ImgDisp;
+    ImgDisp *imgDisp = new ImgDisp;
 
     app.setActiveWindow(imgDisp);
     imgDisp->show();
