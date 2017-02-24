@@ -4,7 +4,7 @@ project(ExposureMerger)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 #Required DLLs
-#libgcc_s_seh-1, libopencv_core310, libopencv_imgcodecs310, libopencv_imgproc310, libopencv_photo310, libstdc++-6, libwinpthread-1, Qt5Core, Qt5Gui, Qt5Widgets, tbb, zlib1, libHalf-2_2, libllmlf-2_2, libjasper-1, libjpeg-8, libpng16_16, libtiff-5, libwebp-6, libbz2-1, libfreetype-6, libglib-2.0-2, libicuin56, libicuuc56, liblex-2_2, libllmThread-2_2, liblzma-5, libprce16-0, 
+#libgcc_s_seh-1, libopencv_core310, libopencv_imgcodecs310, libopencv_imgproc310, libopencv_photo310, libstdc++-6, libwinpthread-1, Qt5Core, Qt5Gui, Qt5Widgets, tbb, zlib1, libHalf-2_2, libllmlf-2_2, libjasper-1, libjpeg-8, libpng16_16, libtiff-5, libwebp-6, libbz2-1, libfreetype-6, libglib-2.0-2, libicuin56, libicuuc56, liblex-2_2, libllmThread-2_2, liblzma-5, libprce16-0, libharfbuzz-0
 
 set(SRC_DIR src/com/mnenmenth/exposuremerger)
 set(CORE_DIR ${SRC_DIR}/core)
